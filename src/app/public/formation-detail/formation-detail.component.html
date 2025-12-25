@@ -1,0 +1,112 @@
+<div class="formation-detail-container" *ngIf="formation">
+  <!-- En-tête de la formation -->
+  <div class="formation-header">
+    <button mat-button (click)="router.navigate(['/formations'])">
+      <mat-icon>arrow_back</mat-icon>
+      Retour aux formations
+    </button>
+
+    <h1>{{ formation.titre }}</h1>
+
+    <div class="formation-meta">
+      <mat-chip-listbox>
+        <mat-chip>
+          <mat-icon>signal_cellular_alt</mat-icon>
+          {{ formation.niveau }}
+        </mat-chip>
+        <mat-chip>
+          <mat-icon>schedule</mat-icon>
+          {{ formation.chargeHoraire }} heures
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+  </div>
+
+  <!-- Description de la formation -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>Description</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ formation.description }}</p>
+
+      <div class="categories-section">
+        <h3>Catégories</h3>
+        <mat-chip-listbox>
+          <mat-chip *ngFor="let cat of formation.categories">{{ cat }}</mat-chip>
+        </mat-chip-listbox>
+      </div>
+
+      <div class="keywords-section" *ngIf="formation.motsCles.length > 0">
+        <h3>Mots-clés</h3>
+        <div class="keywords-list">
+          <span class="keyword" *ngFor="let mc of formation.motsCles">{{ mc }}</span>
+        </div>
+      </div>
+
+      <div class="programme-section">
+        <button mat-raised-button color="accent" (click)="downloadProgramme()">
+          <mat-icon>download</mat-icon>
+          Télécharger le programme
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Sessions disponibles -->
+  <div class="sessions-section">
+    <h2>Sessions Disponibles</h2>
+
+    <div *ngIf="sessions.length === 0" class="no-sessions">
+      <mat-icon>event_busy</mat-icon>
+      <p>Aucune session programmée pour cette formation pour le moment.</p>
+    </div>
+
+    <div class="sessions-list">
+      <mat-card *ngFor="let session of sessions" class="session-card">
+        <mat-card-header>
+          <mat-card-title>
+            Session du {{ session.dateDebut | date:'dd/MM/yyyy' }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            <mat-chip-listbox>
+              <mat-chip [class.complete]="isSessionComplete(session)">
+                {{ session.candidatsInscrits.length }} / {{ session.maxInscrits }} inscrits
+              </mat-chip>
+            </mat-chip-listbox>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="session-dates">
+            <mat-icon>event</mat-icon>
+            <span>
+              Du {{ session.dateDebut | date:'dd/MM/yyyy' }} 
+              au {{ session.dateFin | date:'dd/MM/yyyy' }}
+            </span>
+          </div>
+
+          <div class="session-formateurs">
+            <mat-icon>person</mat-icon>
+            <span>Formateur(s): </span>
+            <span *ngFor="let formateur of getFormateursForSession(session); let last = last">
+              {{ formateur.prenom }} {{ formateur.nom }}<span *ngIf="!last">, </span>
+            </span>
+          </div>
+
+          <p class="session-description">{{ session.description }}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-raised-button 
+                  color="primary" 
+                  (click)="inscrireSession(session)"
+                  [disabled]="isSessionComplete(session)">
+            <mat-icon>how_to_reg</mat-icon>
+            {{ isSessionComplete(session) ? 'Session complète' : 'S\'inscrire' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="formation-form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{ isEditMode ? 'Modifier' : 'Créer' }} une Formation
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formationForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Titre de la formation</mat-label>
+          <input matInput formControlName="titre" placeholder="Ex: Angular Avancé">
+          <mat-error *ngIf="formationForm.get('titre')?.hasError('required')">
+            Le titre est requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="4" 
+                    placeholder="Décrivez la formation..."></textarea>
+          <mat-error *ngIf="formationForm.get('description')?.hasError('required')">
+            La description est requise
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Charge horaire</mat-label>
+            <input matInput type="number" formControlName="chargeHoraire" placeholder="40">
+            <mat-hint>En heures</mat-hint>
+            <mat-error *ngIf="formationForm.get('chargeHoraire')?.hasError('required')">
+              La charge horaire est requise
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Niveau</mat-label>
+            <mat-select formControlName="niveau">
+              <mat-option *ngFor="let niveau of niveaux" [value]="niveau">
+                {{ niveau }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>URL du programme PDF</mat-label>
+          <input matInput formControlName="programmePdf" placeholder="https://...">
+          <mat-hint>Lien vers le programme de la formation</mat-hint>
+        </mat-form-field>
+
+        <div class="array-section">
+          <h3>Catégories</h3>
+          <div formArrayName="categories">
+            <div *ngFor="let cat of categories.controls; let i = index" class="array-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Catégorie {{ i + 1 }}</mat-label>
+                <input matInput [formControlName]="i" placeholder="Ex: Développement Web">
+              </mat-form-field>
+              <button mat-icon-button type="button" color="warn" 
+                      (click)="removeCategorie(i)"
+                      [disabled]="categories.length === 1">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </div>
+          </div>
+          <button mat-button type="button" color="primary" (click)="addCategorie()">
+            <mat-icon>add_circle</mat-icon>
+            Ajouter une catégorie
+          </button>
+        </div>
+
+        <div class="array-section">
+          <h3>Mots-clés</h3>
+          <div formArrayName="motsCles">
+            <div *ngFor="let mc of motsCles.controls; let i = index" class="array-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Mot-clé {{ i + 1 }}</mat-label>
+                <input matInput [formControlName]="i" placeholder="Ex: TypeScript">
+              </mat-form-field>
+              <button mat-icon-button type="button" color="warn" 
+                      (click)="removeMotCle(i)"
+                      [disabled]="motsCles.length === 1">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </div>
+          </div>
+          <button mat-button type="button" color="primary" (click)="addMotCle()">
+            <mat-icon>add_circle</mat-icon>
+            Ajouter un mot-clé
+          </button>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="cancel()">Annuler</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!formationForm.valid">
+            {{ isEditMode ? 'Modifier' : 'Créer' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

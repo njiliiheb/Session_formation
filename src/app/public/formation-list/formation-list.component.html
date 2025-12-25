@@ -1,0 +1,82 @@
+<div class="formation-list-container">
+  <div class="header">
+    <h1>Catalogue des Formations</h1>
+    
+    <div class="filters">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Rechercher</mat-label>
+        <input matInput [(ngModel)]="searchTerm" 
+               (keyup.enter)="applySearch()" 
+               placeholder="Mots-clés...">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="applySearch()">
+        Rechercher
+      </button>
+
+      <button mat-button (click)="clearFilters()" *ngIf="searchTerm || selectedCategorie">
+        <mat-icon>clear</mat-icon>
+        Effacer les filtres
+      </button>
+    </div>
+
+    <div *ngIf="selectedCategorie" class="active-filter">
+      <mat-chip-listbox>
+        <mat-chip>
+          Catégorie: {{ selectedCategorie }}
+          <mat-icon (click)="clearFilters()">cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+  </div>
+
+  <div class="formations-grid" *ngIf="filteredFormations.length > 0">
+    <mat-card *ngFor="let formation of filteredFormations" class="formation-card">
+      <mat-card-header>
+        <mat-card-title>{{ formation.titre }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-listbox>
+            <mat-chip>{{ formation.niveau }}</mat-chip>
+            <mat-chip>{{ formation.chargeHoraire }}h</mat-chip>
+          </mat-chip-listbox>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="description">{{ formation.description }}</p>
+
+        <div class="meta-info">
+          <div class="categories">
+            <strong>Catégories:</strong>
+            <mat-chip *ngFor="let cat of formation.categories">
+              {{ cat }}
+            </mat-chip>
+          </div>
+
+          <div class="keywords" *ngIf="formation.motsCles.length > 0">
+            <strong>Mots-clés:</strong>
+            <span class="keyword" *ngFor="let mc of formation.motsCles.slice(0, 5)">
+              {{ mc }}
+            </span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="viewFormation(formation)">
+          Voir les sessions disponibles
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="filteredFormations.length === 0" class="no-results">
+    <mat-icon>search_off</mat-icon>
+    <h2>Aucune formation trouvée</h2>
+    <p>Essayez de modifier vos critères de recherche.</p>
+    <button mat-raised-button color="primary" (click)="clearFilters()">
+      Voir toutes les formations
+    </button>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+.candidat-form-container {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+
+  mat-card {
+    mat-card-content {
+      padding-top: 20px;
+
+      form {
+        .full-width {
+          width: 100%;
+        }
+
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+
+          @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        mat-form-field {
+          margin-bottom: 15px;
+        }
+
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 15px;
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid #e0e0e0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+<div class="formateur-list-container">
+  <div class="header">
+    <h1>Gestion des Formateurs</h1>
+    <button mat-raised-button color="primary" (click)="addFormateur()">
+      <mat-icon>person_add</mat-icon>
+      Ajouter un formateur
+    </button>
+  </div>
+
+  <mat-card *ngIf="formateurs.length > 0">
+    <table mat-table [dataSource]="formateurs" class="formateurs-table">
+      <!-- Nom Column -->
+      <ng-container matColumnDef="nom">
+        <th mat-header-cell *matHeaderCellDef>Nom</th>
+        <td mat-cell *matCellDef="let formateur">{{ formateur.nom }}</td>
+      </ng-container>
+
+      <!-- Prénom Column -->
+      <ng-container matColumnDef="prenom">
+        <th mat-header-cell *matHeaderCellDef>Prénom</th>
+        <td mat-cell *matCellDef="let formateur">{{ formateur.prenom }}</td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let formateur">{{ formateur.email }}</td>
+      </ng-container>
+
+      <!-- Téléphone Column -->
+      <ng-container matColumnDef="telephone">
+        <th mat-header-cell *matHeaderCellDef>Téléphone</th>
+        <td mat-cell *matCellDef="let formateur">{{ formateur.telephone }}</td>
+      </ng-container>
+
+      <!-- Spécialités Column -->
+      <ng-container matColumnDef="specialites">
+        <th mat-header-cell *matHeaderCellDef>Spécialités</th>
+        <td mat-cell *matCellDef="let formateur">
+          <mat-chip-set>
+            <mat-chip *ngFor="let spec of (formateur.specialites || []).slice(0, 3)">
+              {{ spec }}
+            </mat-chip>
+          </mat-chip-set>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let formateur">
+          <button mat-icon-button (click)="viewCV(formateur.cv)" matTooltip="Voir CV" title="Voir CV">
+            <mat-icon>description</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="editFormateur(formateur)" matTooltip="Modifier" title="Modifier">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteFormateur(formateur)" matTooltip="Supprimer" title="Supprimer">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+
+  <div *ngIf="formateurs.length === 0" class="no-data">
+    <mat-icon>person_off</mat-icon>
+    <p>Aucun formateur enregistré.</p>
+    <button mat-raised-button color="primary" (click)="addFormateur()">
+      Ajouter le premier formateur
+    </button>
+  </div>
+</div>

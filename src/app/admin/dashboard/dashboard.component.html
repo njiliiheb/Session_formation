@@ -1,0 +1,73 @@
+<div class="dashboard-container">
+  <h1>Tableau de Bord Administrateur</h1>
+
+  <!-- Statistiques -->
+  <div class="stats-grid">
+    <mat-card class="stat-card formateurs-card" (click)="navigateTo('/admin-space/formateurs')">
+      <mat-card-content>
+        <mat-icon>person</mat-icon>
+        <div class="stat-info">
+          <h2>{{ stats.formateurs }}</h2>
+          <p>Formateurs</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card formations-card" (click)="navigateTo('/admin-space/formations')">
+      <mat-card-content>
+        <mat-icon>school</mat-icon>
+        <div class="stat-info">
+          <h2>{{ stats.formations }}</h2>
+          <p>Formations</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card sessions-card" (click)="navigateTo('/admin-space/sessions')">
+      <mat-card-content>
+        <mat-icon>event</mat-icon>
+        <div class="stat-info">
+          <h2>{{ stats.sessions }}</h2>
+          <p>Sessions</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card candidats-card" (click)="navigateTo('/admin-space/candidats')">
+      <mat-card-content>
+        <mat-icon>groups</mat-icon>
+        <div class="stat-info">
+          <h2>{{ stats.candidats }}</h2>
+          <p>Candidats</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="quick-actions">
+    <h2>Actions Rapides</h2>
+    
+    <div class="actions-grid">
+      <button mat-raised-button color="primary" (click)="navigateTo('/admin-space/formateurs/new')">
+        <mat-icon>person_add</mat-icon>
+        Ajouter un formateur
+      </button>
+
+      <button mat-raised-button color="primary" (click)="navigateTo('/admin-space/formations/new')">
+        <mat-icon>add_circle</mat-icon>
+        Créer une formation
+      </button>
+
+      <button mat-raised-button color="primary" (click)="navigateTo('/admin-space/sessions/new')">
+        <mat-icon>event_available</mat-icon>
+        Programmer une session
+      </button>
+
+      <button mat-raised-button color="primary" (click)="navigateTo('/admin-space/candidats/new')">
+        <mat-icon>person_add</mat-icon>
+        Ajouter un candidat
+      </button>
+    </div>
+  </div>
+</div>

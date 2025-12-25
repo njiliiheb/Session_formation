@@ -1,0 +1,66 @@
+.formation-list-container {
+  padding: 40px 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+
+    h1 {
+      margin: 0;
+      color: #333;
+    }
+
+    button mat-icon {
+      margin-right: 8px;
+    }
+  }
+
+  .formations-table {
+    width: 100%;
+
+    .description {
+      margin: 5px 0 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    mat-chip-set {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    // Style pour la colonne actions
+    .mat-column-actions {
+      width: 150px;
+      text-align: right;
+      padding-right: 16px;
+    }
+
+    button {
+      margin: 0 4px;
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 80px 20px;
+    color: #999;
+
+    mat-icon {
+      font-size: 100px;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+  }
+}

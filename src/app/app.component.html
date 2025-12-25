@@ -1,0 +1,66 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <button mat-button (click)="navigateToHome()">
+    <mat-icon>home</mat-icon>
+    <span class="toolbar-title">{{ title }}</span>
+  </button>
+
+  <span class="spacer"></span>
+
+  <!-- Menu Public -->
+  <ng-container *ngIf="!isAdminSpace">
+    <button mat-button (click)="navigateToCategories()">
+      <mat-icon>category</mat-icon>
+      Catégories
+    </button>
+    <button mat-button (click)="navigateToFormations()">
+      <mat-icon>school</mat-icon>
+      Formations
+    </button>
+    <button mat-raised-button color="accent" (click)="navigateToAdmin()">
+      <mat-icon>admin_panel_settings</mat-icon>
+      Administration
+    </button>
+  </ng-container>
+
+  <!-- Menu Admin -->
+  <ng-container *ngIf="isAdminSpace">
+    <button mat-button [routerLink]="['/admin-space']">
+      <mat-icon>dashboard</mat-icon>
+      Tableau de bord
+    </button>
+    <button mat-button [matMenuTriggerFor]="menuGestion">
+      <mat-icon>settings</mat-icon>
+      Gestion
+    </button>
+    <mat-menu #menuGestion="matMenu">
+      <button mat-menu-item [routerLink]="['/admin-space/formateurs']">
+        <mat-icon>person</mat-icon>
+        Formateurs
+      </button>
+      <button mat-menu-item [routerLink]="['/admin-space/formations']">
+        <mat-icon>school</mat-icon>
+        Formations
+      </button>
+      <button mat-menu-item [routerLink]="['/admin-space/sessions']">
+        <mat-icon>event</mat-icon>
+        Sessions
+      </button>
+      <button mat-menu-item [routerLink]="['/admin-space/candidats']">
+        <mat-icon>groups</mat-icon>
+        Candidats
+      </button>
+    </mat-menu>
+    <button mat-raised-button (click)="navigateToHome()">
+      <mat-icon>exit_to_app</mat-icon>
+      Quitter Admin
+    </button>
+  </ng-container>
+</mat-toolbar>
+
+<main class="app-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="app-footer">
+  <p>&copy; 2025 Gestion des Sessions de Formation. Tous droits réservés.</p>
+</footer>

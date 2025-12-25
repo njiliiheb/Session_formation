@@ -1,0 +1,76 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Gestion des Sessions de Formation</h1>
+      <p>Découvrez nos formations et inscrivez-vous aux prochaines sessions</p>
+      
+      <div class="search-bar">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Rechercher une formation</mat-label>
+          <input matInput [(ngModel)]="searchTerm" 
+                 (keyup.enter)="onSearch()" 
+                 placeholder="Entrez des mots-clés...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="onSearch()">
+          Rechercher
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catégories Section -->
+  <section class="categories-section">
+    <div class="section-header">
+      <h2>Catégories de Formations</h2>
+      <button mat-button color="primary" (click)="viewCategories()">
+        Voir toutes les catégories
+      </button>
+    </div>
+    
+    <div class="categories-grid">
+      <mat-card *ngFor="let categorie of categories" class="category-card">
+        <mat-card-content>
+          <mat-icon>category</mat-icon>
+          <h3>{{ categorie }}</h3>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Formations Populaires -->
+  <section class="formations-section">
+    <h2>Formations Populaires</h2>
+    
+    <div class="formations-grid">
+      <mat-card *ngFor="let formation of formations" class="formation-card">
+        <mat-card-header>
+          <mat-card-title>{{ formation.titre }}</mat-card-title>
+          <mat-card-subtitle>
+            <mat-chip-listbox>
+              <mat-chip>{{ formation.niveau }}</mat-chip>
+              <mat-chip>{{ formation.chargeHoraire }}h</mat-chip>
+            </mat-chip-listbox>
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <p>{{ formation.description | slice:0:150 }}...</p>
+          
+          <div class="formation-tags">
+            <mat-chip *ngFor="let cat of formation.categories.slice(0, 3)">
+              {{ cat }}
+            </mat-chip>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="viewFormation(formation)">
+            Voir les détails
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+</div>

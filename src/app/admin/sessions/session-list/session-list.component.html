@@ -1,0 +1,53 @@
+<div class="session-list-container">
+  <div class="header">
+    <h1>Gestion des Sessions</h1>
+    <button mat-raised-button color="primary" (click)="addSession()">
+      <mat-icon>event_available</mat-icon>
+      Programmer une session
+    </button>
+  </div>
+
+  <div class="sessions-grid" *ngIf="sessions.length > 0">
+    <mat-card *ngFor="let session of sessions" class="session-card">
+      <mat-card-header>
+        <mat-card-title>{{ getFormationTitre(session.formationId) }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-set>
+            <mat-chip [class.complete]="session.candidatsInscrits.length >= session.maxInscrits">
+              {{ session.candidatsInscrits.length }} / {{ session.maxInscrits }} inscrits
+            </mat-chip>
+          </mat-chip-set>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="session-info">
+          <p><mat-icon>event</mat-icon> {{ session.dateDebut | date:'dd/MM/yyyy' }} - {{ session.dateFin | date:'dd/MM/yyyy' }}</p>
+          <p><mat-icon>person</mat-icon> 
+            <span *ngFor="let fId of session.formateurIds; let last = last">
+              {{ getFormateurNom(fId) }}<span *ngIf="!last">, </span>
+            </span>
+          </p>
+          <p class="description">{{ session.description }}</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-icon-button color="primary" (click)="editSession(session)" matTooltip="Modifier" title="Modifier">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteSession(session)" matTooltip="Supprimer" title="Supprimer">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="sessions.length === 0" class="no-data">
+    <mat-icon>event_busy</mat-icon>
+    <p>Aucune session programmée.</p>
+    <button mat-raised-button color="primary" (click)="addSession()">
+      Programmer la première session
+    </button>
+  </div>
+</div>

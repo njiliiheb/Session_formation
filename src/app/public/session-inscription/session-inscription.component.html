@@ -1,0 +1,71 @@
+<div class="inscription-container">
+  <mat-card class="inscription-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>how_to_reg</mat-icon>
+        Inscription à la Session
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content *ngIf="session">
+      <div class="session-info">
+        <h3>Informations de la Session</h3>
+        <p><strong>Date de début:</strong> {{ session.dateDebut | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Date de fin:</strong> {{ session.dateFin | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Places disponibles:</strong> {{ session.maxInscrits - session.candidatsInscrits.length }} / {{ session.maxInscrits }}</p>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()" class="inscription-form">
+        <h3>Vos informations</h3>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="nom" placeholder="Entrez votre nom">
+          <mat-error *ngIf="inscriptionForm.get('nom')?.hasError('required')">
+            Le nom est requis
+          </mat-error>
+          <mat-error *ngIf="inscriptionForm.get('nom')?.hasError('minlength')">
+            Le nom doit contenir au moins 2 caractères
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="prenom" placeholder="Entrez votre prénom">
+          <mat-error *ngIf="inscriptionForm.get('prenom')?.hasError('required')">
+            Le prénom est requis
+          </mat-error>
+          <mat-error *ngIf="inscriptionForm.get('prenom')?.hasError('minlength')">
+            Le prénom doit contenir au moins 2 caractères
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="votre@email.com">
+          <mat-error *ngIf="inscriptionForm.get('email')?.hasError('required')">
+            L'email est requis
+          </mat-error>
+          <mat-error *ngIf="inscriptionForm.get('email')?.hasError('email')">
+            Email invalide
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="cancel()">
+            Annuler
+          </button>
+          <button mat-raised-button 
+                  color="primary" 
+                  type="submit"
+                  [disabled]="!inscriptionForm.valid || isSubmitting">
+            <mat-icon>check</mat-icon>
+            {{ isSubmitting ? 'Inscription en cours...' : 'Confirmer l\'inscription' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

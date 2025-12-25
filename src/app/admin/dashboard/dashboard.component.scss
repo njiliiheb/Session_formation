@@ -1,0 +1,114 @@
+.dashboard-container {
+  padding: 40px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  h1 {
+    margin-bottom: 40px;
+    color: #333;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+
+    .stat-card {
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      }
+
+      mat-card-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 30px;
+
+        mat-icon {
+          font-size: 64px;
+          width: 64px;
+          height: 64px;
+        }
+
+        .stat-info {
+          h2 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: bold;
+          }
+
+          p {
+            margin: 5px 0 0;
+            font-size: 1.2rem;
+            color: #666;
+          }
+        }
+      }
+
+      &.formateurs-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+
+        mat-icon, .stat-info p {
+          color: white;
+        }
+      }
+
+      &.formations-card {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+
+        mat-icon, .stat-info p {
+          color: white;
+        }
+      }
+
+      &.sessions-card {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+
+        mat-icon, .stat-info p {
+          color: white;
+        }
+      }
+
+      &.candidats-card {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+
+        mat-icon, .stat-info p {
+          color: white;
+        }
+      }
+    }
+  }
+
+  .quick-actions {
+    h2 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+
+      button {
+        padding: 20px;
+        height: auto;
+        font-size: 1rem;
+
+        mat-icon {
+          margin-right: 10px;
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
