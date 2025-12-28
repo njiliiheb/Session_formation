@@ -55,17 +55,58 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>URL de la photo</mat-label>
-          <input matInput formControlName="photo" placeholder="https://...">
-          <mat-hint>URL de la photo du formateur</mat-hint>
-        </mat-form-field>
+        <div class="file-upload-section photo-section">
+          <h3>Photo du Formateur</h3>
+          <div class="upload-area">
+            <input 
+              type="file" 
+              #photoInput 
+              (change)="onPhotoSelected($event)" 
+              accept="image/*"
+              style="display: none;"
+            >
+            <div class="photo-preview" *ngIf="selectedPhotoPreview || formateurForm.get('photo')?.value">
+              <img [src]="selectedPhotoPreview || formateurForm.get('photo')?.value" alt="Photo du formateur">
+            </div>
+            <button mat-raised-button type="button" color="primary" (click)="photoInput.click()">
+              <mat-icon>add_photo_alternate</mat-icon>
+              {{ selectedPhotoFileName ? 'Changer la photo' : 'Choisir une photo' }}
+            </button>
+            <div *ngIf="selectedPhotoFileName" class="file-info">
+              <mat-icon>image</mat-icon>
+              <span>{{ selectedPhotoFileName }}</span>
+              <button mat-icon-button type="button" (click)="removePhoto()" color="warn">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <mat-hint *ngIf="!selectedPhotoFileName">Formats acceptés: JPG, PNG, GIF</mat-hint>
+          </div>
+        </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>URL du CV</mat-label>
-          <input matInput formControlName="cv" placeholder="https://...">
-          <mat-hint>URL du CV du formateur</mat-hint>
-        </mat-form-field>
+        <div class="file-upload-section">
+          <h3>CV du Formateur</h3>
+          <div class="upload-area">
+            <input 
+              type="file" 
+              #fileInput 
+              (change)="onFileSelected($event)" 
+              accept=".pdf,.doc,.docx"
+              style="display: none;"
+            >
+            <button mat-raised-button type="button" color="accent" (click)="fileInput.click()">
+              <mat-icon>upload_file</mat-icon>
+              Choisir un fichier CV
+            </button>
+            <div *ngIf="selectedFileName" class="file-info">
+              <mat-icon>description</mat-icon>
+              <span>{{ selectedFileName }}</span>
+              <button mat-icon-button type="button" (click)="removeFile()" color="warn">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <mat-hint *ngIf="!selectedFileName">Formats acceptés: PDF, DOC, DOCX</mat-hint>
+          </div>
+        </div>
 
         <div class="specialites-section">
           <h3>Spécialités</h3>

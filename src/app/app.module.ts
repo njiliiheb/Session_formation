@@ -35,6 +35,7 @@ import { CategoriesComponent } from './public/categories/categories.component';
 import { FormationListComponent } from './public/formation-list/formation-list.component';
 import { FormationDetailComponent } from './public/formation-detail/formation-detail.component';
 import { SessionInscriptionComponent } from './public/session-inscription/session-inscription.component';
+import { ProgrammeDetailModalComponent } from './public/programme-detail-modal/programme-detail-modal.component';
 
 // Admin Components
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
@@ -56,6 +57,7 @@ import { CandidatFormComponent } from './admin/candidats/candidat-form/candidat-
     FormationListComponent,
     FormationDetailComponent,
     SessionInscriptionComponent,
+    ProgrammeDetailModalComponent,
     // Admin
     DashboardComponent,
     FormateurListComponent,

@@ -6,6 +6,7 @@ export interface Formateur {
   telephone: string;
   cin: string;
   photo: string; // URL simulée
-  cv: string; // URL simulée
+  cv: string; // URL ou base64 du fichier CV
+  cvFileName?: string; // Nom du fichier CV
   specialites: string[];
 }

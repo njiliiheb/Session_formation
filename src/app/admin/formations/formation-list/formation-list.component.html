@@ -32,19 +32,26 @@
       <ng-container matColumnDef="categories">
         <th mat-header-cell *matHeaderCellDef>Catégories</th>
         <td mat-cell *matCellDef="let formation">
-          <mat-chip-set>
+          <mat-chip-set *ngIf="formation.categories && formation.categories.length > 0">
             <mat-chip *ngFor="let cat of formation.categories.slice(0, 2)">
               {{ cat }}
             </mat-chip>
           </mat-chip-set>
+          <span *ngIf="!formation.categories || formation.categories.length === 0" class="no-data-text">
+            Aucune catégorie
+          </span>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let formation">
-          <button mat-icon-button (click)="viewProgramme(formation.programmePdf)" matTooltip="Voir programme">
-            <mat-icon>description</mat-icon>
+          <button mat-icon-button 
+                  [color]="formation.programmePdf && formation.programmePdf.trim() !== '' ? 'accent' : ''" 
+                  [disabled]="!formation.programmePdf || formation.programmePdf.trim() === ''"
+                  (click)="viewProgramme(formation.programmePdf, $event)" 
+                  [matTooltip]="formation.programmePdf && formation.programmePdf.trim() !== '' ? 'Voir programme' : 'Aucun programme'">
+            <mat-icon>{{ formation.programmePdf && formation.programmePdf.trim() !== '' ? 'description' : 'description_outlined' }}</mat-icon>
           </button>
           <button mat-icon-button color="primary" (click)="editFormation(formation)" matTooltip="Modifier">
             <mat-icon>edit</mat-icon>

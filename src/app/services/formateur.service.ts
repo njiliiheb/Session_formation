@@ -32,8 +32,26 @@ export class FormateurService {
   create(formateur: Formateur): Formateur {
     const formateurs = this.getAll();
     formateur.id = this.generateId();
+    
+    // Debug: Log avant sauvegarde
+    console.log('\n========== CREATION FORMATEUR ==========');
+    console.log('Nom:', formateur.nom, formateur.prenom);
+    console.log('CV avant sauvegarde:');
+    console.log('  - Existe:', !!formateur.cv);
+    console.log('  - Type:', typeof formateur.cv);
+    console.log('  - Length:', formateur.cv?.length || 0);
+    console.log('  - FileName:', formateur.cvFileName);
+    
     formateurs.push(formateur);
     this.storageService.setItem(this.STORAGE_KEY, formateurs);
+    
+    // Debug: Vérifier après sauvegarde
+    const saved = this.getById(formateur.id);
+    console.log('\nCV après sauvegarde:');
+    console.log('  - Existe:', !!saved?.cv);
+    console.log('  - Length:', saved?.cv?.length || 0);
+    console.log('========================================\n');
+    
     this.formateursSubject.next(formateurs);
     return formateur;
   }

@@ -15,6 +15,8 @@ export class FormationFormComponent implements OnInit {
   isEditMode = false;
   formationId: string | null = null;
   niveaux = Object.values(NiveauFormation);
+  selectedPdfFileName: string = '';
+  selectedPdfFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +42,8 @@ export class FormationFormComponent implements OnInit {
       titre: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       chargeHoraire: [0, [Validators.required, Validators.min(1)]],
-      programmePdf: ['https://example.com/programme.pdf', [Validators.required]],
+      programmePdf: [''],
+      programmePdfFileName: [''],
       niveau: [NiveauFormation.DEBUTANT, [Validators.required]],
       categories: this.fb.array([this.fb.control('')]),
       motsCles: this.fb.array([this.fb.control('')])
@@ -93,19 +96,35 @@ export class FormationFormComponent implements OnInit {
         description: formation.description,
         chargeHoraire: formation.chargeHoraire,
         programmePdf: formation.programmePdf,
+        programmePdfFileName: formation.programmePdfFileName || '',
         niveau: formation.niveau
       });
+      
+      if (formation.programmePdfFileName) {
+        this.selectedPdfFileName = formation.programmePdfFileName;
+      }
     }
   }
 
   onSubmit(): void {
     if (this.formationForm.valid) {
+      const formData = this.formationForm.value;
+      
       const formation: Formation = {
-        ...this.formationForm.value,
+        ...formData,
         id: '',
         categories: this.categories.value.filter((c: string) => c.trim() !== ''),
-        motsCles: this.motsCles.value.filter((m: string) => m.trim() !== '')
+        motsCles: this.motsCles.value.filter((m: string) => m.trim() !== ''),
+        programmePdf: formData.programmePdf || '',
+        programmePdfFileName: formData.programmePdfFileName || ''
       };
+
+      console.log('Formation à enregistrer:', {
+        titre: formation.titre,
+        hasPdf: !!formation.programmePdf,
+        pdfFileName: formation.programmePdfFileName,
+        pdfLength: formation.programmePdf?.length || 0
+      });
 
       if (this.isEditMode && this.formationId) {
         this.formationService.update(this.formationId, formation);
@@ -121,5 +140,43 @@ export class FormationFormComponent implements OnInit {
 
   cancel(): void {
     this.router.navigate(['/admin-space/formations']);
+  }
+
+  onPdfFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      this.selectedPdfFile = file;
+      this.selectedPdfFileName = file.name;
+      
+      console.log('Fichier PDF sélectionné:', file.name, 'Taille:', file.size, 'bytes');
+      
+      // Convertir le fichier en base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        console.log('PDF converti en base64, longueur:', base64String.length);
+        this.formationForm.patchValue({
+          programmePdf: base64String,
+          programmePdfFileName: file.name
+        });
+        console.log('Formulaire mis à jour avec le PDF');
+      };
+      reader.onerror = (error) => {
+        console.error('Erreur lors de la lecture du fichier:', error);
+        this.snackBar.open('Erreur lors de la lecture du fichier PDF', 'Fermer', { duration: 3000 });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.snackBar.open('Veuillez sélectionner un fichier PDF valide', 'Fermer', { duration: 3000 });
+    }
+  }
+
+  removePdfFile(): void {
+    this.selectedPdfFile = null;
+    this.selectedPdfFileName = '';
+    this.formationForm.patchValue({
+      programmePdf: '',
+      programmePdfFileName: ''
+    });
   }
 }

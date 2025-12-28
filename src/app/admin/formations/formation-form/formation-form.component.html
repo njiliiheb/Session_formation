@@ -45,11 +45,30 @@
           </mat-form-field>
         </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>URL du programme PDF</mat-label>
-          <input matInput formControlName="programmePdf" placeholder="https://...">
-          <mat-hint>Lien vers le programme de la formation</mat-hint>
-        </mat-form-field>
+        <div class="file-upload-section">
+          <h3>Programme de la Formation (PDF)</h3>
+          <div class="upload-area">
+            <input 
+              type="file" 
+              #pdfFileInput 
+              (change)="onPdfFileSelected($event)" 
+              accept=".pdf"
+              style="display: none;"
+            >
+            <button mat-raised-button type="button" color="accent" (click)="pdfFileInput.click()">
+              <mat-icon>upload_file</mat-icon>
+              Choisir un fichier PDF
+            </button>
+            <div *ngIf="selectedPdfFileName" class="file-info">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <span>{{ selectedPdfFileName }}</span>
+              <button mat-icon-button type="button" (click)="removePdfFile()" color="warn">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <mat-hint *ngIf="!selectedPdfFileName">Format accepté: PDF uniquement</mat-hint>
+          </div>
+        </div>
 
         <div class="array-section">
           <h3>Catégories</h3>

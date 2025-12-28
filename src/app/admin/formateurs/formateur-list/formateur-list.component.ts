@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class FormateurListComponent implements OnInit {
   formateurs: Formateur[] = [];
-  displayedColumns: string[] = ['nom', 'prenom', 'email', 'telephone', 'specialites', 'actions'];
+  displayedColumns: string[] = ['photo', 'nom', 'prenom', 'email', 'telephone', 'specialites', 'actions'];
 
   constructor(
     private formateurService: FormateurService,
@@ -44,6 +44,32 @@ export class FormateurListComponent implements OnInit {
   }
 
   viewCV(cv: string): void {
-    window.open(cv, '_blank');
+    if (cv) {
+      // Si c'est un fichier base64, créer un blob et l'ouvrir
+      if (cv.startsWith('data:')) {
+        const byteString = atob(cv.split(',')[1]);
+        const mimeString = cv.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: mimeString });
+        const url = window.URL.createObjectURL(blob);
+        
+        // Ouvrir dans un nouvel onglet
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.location.href = url;
+          // Nettoyer l'URL après un délai pour libérer la mémoire
+          setTimeout(() => window.URL.revokeObjectURL(url), 100);
+        }
+      } else {
+        // Sinon c'est une URL
+        window.open(cv, '_blank');
+      }
+    } else {
+      this.snackBar.open('Aucun CV disponible pour ce formateur', 'Fermer', { duration: 3000 });
+    }
   }
 }

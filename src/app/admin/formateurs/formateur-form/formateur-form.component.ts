@@ -14,6 +14,11 @@ export class FormateurFormComponent implements OnInit {
   formateurForm!: FormGroup;
   isEditMode = false;
   formateurId: string | null = null;
+  selectedFileName: string = '';
+  selectedFile: File | null = null;
+  selectedPhotoFileName: string = '';
+  selectedPhotoFile: File | null = null;
+  selectedPhotoPreview: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +47,8 @@ export class FormateurFormComponent implements OnInit {
       telephone: ['', [Validators.required]],
       cin: ['', [Validators.required]],
       photo: ['https://via.placeholder.com/150', [Validators.required]],
-      cv: ['https://example.com/cv.pdf', [Validators.required]],
+      cv: [''],
+      cvFileName: [''],
       specialites: this.fb.array([this.fb.control('')])
     });
   }
@@ -76,8 +82,17 @@ export class FormateurFormComponent implements OnInit {
         telephone: formateur.telephone,
         cin: formateur.cin,
         photo: formateur.photo,
-        cv: formateur.cv
+        cv: formateur.cv,
+        cvFileName: formateur.cvFileName || ''
       });
+      
+      if (formateur.cvFileName) {
+        this.selectedFileName = formateur.cvFileName;
+      }
+      
+      if (formateur.photo && formateur.photo.startsWith('data:')) {
+        this.selectedPhotoPreview = formateur.photo;
+      }
     }
   }
 
@@ -88,6 +103,12 @@ export class FormateurFormComponent implements OnInit {
         id: '',
         specialites: this.specialites.value.filter((s: string) => s.trim() !== '')
       };
+
+      // Debug: vérifier les données du formateur avant sauvegarde
+      console.log('Formateur à sauvegarder:', formateur);
+      console.log('CV disponible:', !!formateur.cv);
+      console.log('CV length:', formateur.cv?.length || 0);
+      console.log('CV fileName:', formateur.cvFileName);
 
       if (this.isEditMode && this.formateurId) {
         this.formateurService.update(this.formateurId, formateur);
@@ -103,5 +124,67 @@ export class FormateurFormComponent implements OnInit {
 
   cancel(): void {
     this.router.navigate(['/admin-space/formateurs']);
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.selectedFileName = file.name;
+      
+      // Convertir le fichier en base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        this.formateurForm.patchValue({
+          cv: base64String,
+          cvFileName: file.name
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeFile(): void {
+    this.selectedFile = null;
+    this.selectedFileName = '';
+    this.formateurForm.patchValue({
+      cv: '',
+      cvFileName: ''
+    });
+  }
+
+  onPhotoSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      // Vérifier que c'est une image
+      if (!file.type.startsWith('image/')) {
+        this.snackBar.open('Veuillez sélectionner un fichier image valide', 'Fermer', { duration: 3000 });
+        return;
+      }
+
+      this.selectedPhotoFile = file;
+      this.selectedPhotoFileName = file.name;
+      
+      // Convertir l'image en base64 et créer un aperçu
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        this.selectedPhotoPreview = base64String;
+        this.formateurForm.patchValue({
+          photo: base64String
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removePhoto(): void {
+    this.selectedPhotoFile = null;
+    this.selectedPhotoFileName = '';
+    this.selectedPhotoPreview = '';
+    this.formateurForm.patchValue({
+      photo: 'https://via.placeholder.com/150'
+    });
   }
 }

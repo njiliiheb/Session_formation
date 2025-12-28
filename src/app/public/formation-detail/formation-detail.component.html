@@ -43,13 +43,6 @@
           <span class="keyword" *ngFor="let mc of formation.motsCles">{{ mc }}</span>
         </div>
       </div>
-
-      <div class="programme-section">
-        <button mat-raised-button color="accent" (click)="downloadProgramme()">
-          <mat-icon>download</mat-icon>
-          Télécharger le programme
-        </button>
-      </div>
     </mat-card-content>
   </mat-card>
 
@@ -98,6 +91,12 @@
         </mat-card-content>
 
         <mat-card-actions>
+          <button mat-button
+                  color="accent"
+                  (click)="viewProgrammeDetails(session)">
+            <mat-icon>visibility</mat-icon>
+            Voir Programme
+          </button>
           <button mat-raised-button 
                   color="primary" 
                   (click)="inscrireSession(session)"

@@ -9,7 +9,8 @@ export interface Formation {
   titre: string;
   description: string;
   chargeHoraire: number;
-  programmePdf: string; // URL simulée
+  programmePdf: string; // URL ou base64 du fichier programme
+  programmePdfFileName?: string; // Nom du fichier programme
   niveau: NiveauFormation;
   categories: string[];
   motsCles: string[];

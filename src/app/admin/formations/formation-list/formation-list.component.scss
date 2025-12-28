@@ -34,15 +34,23 @@
       gap: 4px;
     }
 
+    .no-data-text {
+      color: #999;
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
     // Style pour la colonne actions
     .mat-column-actions {
-      width: 150px;
+      width: 180px;
       text-align: right;
       padding-right: 16px;
+      white-space: nowrap;
     }
 
     button {
-      margin: 0 4px;
+      margin: 0 2px;
+      display: inline-flex;
     }
   }
 

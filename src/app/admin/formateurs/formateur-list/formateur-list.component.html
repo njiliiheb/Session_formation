@@ -9,6 +9,16 @@
 
   <mat-card *ngIf="formateurs.length > 0">
     <table mat-table [dataSource]="formateurs" class="formateurs-table">
+      <!-- Photo Column -->
+      <ng-container matColumnDef="photo">
+        <th mat-header-cell *matHeaderCellDef>Photo</th>
+        <td mat-cell *matCellDef="let formateur">
+          <img [src]="formateur.photo || 'https://via.placeholder.com/50'" 
+               [alt]="formateur.prenom + ' ' + formateur.nom"
+               class="formateur-photo">
+        </td>
+      </ng-container>
+
       <!-- Nom Column -->
       <ng-container matColumnDef="nom">
         <th mat-header-cell *matHeaderCellDef>Nom</th>
@@ -49,8 +59,13 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let formateur">
-          <button mat-icon-button (click)="viewCV(formateur.cv)" matTooltip="Voir CV" title="Voir CV">
-            <mat-icon>description</mat-icon>
+          <button mat-icon-button 
+                  [color]="formateur.cv && formateur.cv.trim() !== '' ? 'accent' : ''" 
+                  [disabled]="!formateur.cv || formateur.cv.trim() === ''"
+                  (click)="viewCV(formateur.cv)" 
+                  [matTooltip]="formateur.cv && formateur.cv.trim() !== '' ? 'Voir CV' : 'Aucun CV'" 
+                  title="Voir CV">
+            <mat-icon>{{ formateur.cv && formateur.cv.trim() !== '' ? 'description' : 'description_outlined' }}</mat-icon>
           </button>
           <button mat-icon-button color="primary" (click)="editFormateur(formateur)" matTooltip="Modifier" title="Modifier">
             <mat-icon>edit</mat-icon>

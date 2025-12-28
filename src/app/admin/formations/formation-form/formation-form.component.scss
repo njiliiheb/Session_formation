@@ -62,6 +62,60 @@
           }
         }
 
+        .file-upload-section {
+          margin: 30px 0;
+          padding: 20px;
+          background: #f5f5f5;
+          border-radius: 8px;
+
+          h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+          }
+
+          .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: border-color 0.3s;
+            background: white;
+
+            &:hover {
+              border-color: #ff4081;
+            }
+
+            .file-info {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 10px;
+              margin-top: 15px;
+              padding: 10px;
+              background-color: #fce4ec;
+              border-radius: 4px;
+
+              mat-icon {
+                color: #ff4081;
+              }
+
+              span {
+                flex: 1;
+                text-align: left;
+                font-weight: 500;
+              }
+            }
+
+            mat-hint {
+              display: block;
+              margin-top: 10px;
+              color: #666;
+              font-size: 12px;
+            }
+          }
+        }
+
         .form-actions {
           display: flex;
           justify-content: flex-end;

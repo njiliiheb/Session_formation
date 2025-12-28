@@ -1,0 +1,146 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2 mat-dialog-title>
+      <mat-icon>description</mat-icon>
+      Détails du Programme
+    </h2>
+    <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <!-- Informations sur la formation -->
+    <div class="formation-info">
+      <h3>{{ data.formation.titre }}</h3>
+      <p class="description">{{ data.formation.description }}</p>
+      
+      <div class="info-chips">
+        <mat-chip-listbox>
+          <mat-chip>
+            <mat-icon>signal_cellular_alt</mat-icon>
+            {{ data.formation.niveau }}
+          </mat-chip>
+          <mat-chip>
+            <mat-icon>schedule</mat-icon>
+            {{ data.formation.chargeHoraire }} heures
+          </mat-chip>
+        </mat-chip-listbox>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Programme PDF -->
+    <div class="programme-section">
+      <h3>
+        <mat-icon>picture_as_pdf</mat-icon>
+        Programme de la Formation
+      </h3>
+      <div class="document-card">
+        <mat-icon class="doc-icon">description</mat-icon>
+        <div class="doc-info">
+          <h4>{{ data.formation.programmePdfFileName || 'Programme.pdf' }}</h4>
+          <p>Document du programme détaillé</p>
+        </div>
+        <div class="doc-actions">
+          <button mat-icon-button (click)="viewProgramme()" matTooltip="Voir">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="downloadProgramme()" matTooltip="Télécharger">
+            <mat-icon>download</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Informations sur la session -->
+    <div class="session-info">
+      <h3>
+        <mat-icon>event</mat-icon>
+        Informations de la Session
+      </h3>
+      <div class="info-row">
+        <span class="label">Dates:</span>
+        <span class="value">
+          Du {{ data.session.dateDebut | date:'dd/MM/yyyy' }} 
+          au {{ data.session.dateFin | date:'dd/MM/yyyy' }}
+        </span>
+      </div>
+      <div class="info-row">
+        <span class="label">Places:</span>
+        <span class="value">
+          {{ data.session.candidatsInscrits.length }} / {{ data.session.maxInscrits }} inscrits
+        </span>
+      </div>
+      <p class="session-description">{{ data.session.description }}</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Formateurs -->
+    <div class="formateurs-section">
+      <h3>
+        <mat-icon>school</mat-icon>
+        Formateur(s) de cette Session
+      </h3>
+      
+      <div class="formateurs-list">
+        <mat-card *ngFor="let formateur of data.formateurs" class="formateur-card">
+          <div class="formateur-header">
+            <div class="formateur-photo">
+              <img [src]="formateur.photo || 'https://via.placeholder.com/80'" 
+                   [alt]="formateur.prenom + ' ' + formateur.nom">
+            </div>
+            <div class="formateur-info">
+              <h4>{{ formateur.prenom }} {{ formateur.nom }}</h4>
+              <p class="email">
+                <mat-icon>email</mat-icon>
+                {{ formateur.email }}
+              </p>
+              <p class="phone">
+                <mat-icon>phone</mat-icon>
+                {{ formateur.telephone }}
+              </p>
+            </div>
+          </div>
+
+          <div class="formateur-specialites">
+            <strong>Spécialités:</strong>
+            <mat-chip-listbox>
+              <mat-chip *ngFor="let spec of formateur.specialites">{{ spec }}</mat-chip>
+            </mat-chip-listbox>
+          </div>
+
+          <div class="cv-section">
+            <div class="document-card cv-card" *ngIf="formateur.cv && formateur.cv.trim() !== ''">
+              <mat-icon class="doc-icon">account_box</mat-icon>
+              <div class="doc-info">
+                <h4>{{ formateur.cvFileName || 'CV_' + formateur.nom + '.pdf' }}</h4>
+                <p>Curriculum Vitae</p>
+              </div>
+              <div class="doc-actions">
+                <button mat-icon-button (click)="viewCV(formateur)" matTooltip="Voir le CV">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button (click)="downloadCV(formateur)" matTooltip="Télécharger le CV">
+                  <mat-icon>download</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="no-cv-message" *ngIf="!formateur.cv || formateur.cv.trim() === ''">
+              <mat-icon>info</mat-icon>
+              <p>Aucun CV disponible pour ce formateur</p>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="close()">Fermer</button>
+  </mat-dialog-actions>
+</div>
